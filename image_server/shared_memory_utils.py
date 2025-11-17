@@ -19,6 +19,9 @@ import os
 SHM_NAME = "isaac_multi_image_shm"
 SHM_SIZE = 640* 480 * 3 * 3 + 1024  # the size of the concatenated images + the header information buffer
 
+# canonical order for streaming images; writer and reader must stay in sync
+IMAGE_STREAM_ORDER: List[str] = ["head", "cam_left_high", "cam_right_high", "left", "right"]
+
 # define the simplified header structure
 class SimpleImageHeader(ctypes.Structure):
     """Simplified image header structure"""
@@ -114,10 +117,10 @@ class MultiImageWriter:
             return True
             
         try:
-            # get the images in order: head, left, right
+            # get the images in order, skipping ones that are missing
             frames_to_concat = []
-            image_order = ['head', 'left', 'right']
-            
+            image_order = IMAGE_STREAM_ORDER
+
             for image_name in image_order:
                 if image_name in images:
                     image = images[image_name]
@@ -268,7 +271,7 @@ class MultiImageReader:
             
             # split the images
             images = {}
-            image_names = ['head', 'left', 'right']
+            image_names = IMAGE_STREAM_ORDER.copy()
             single_width = header.single_width
             
             for i in range(header.image_count):

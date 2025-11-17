@@ -113,41 +113,16 @@ class TableCylinderSceneCfg(InteractiveSceneCfg): # inherit from the interactive
         ),
     )
     #HIVE-INFO: add toy
+    #HIVE-TODO: WHy is it not working?
     toy_pork = AssetBaseCfg(
         prim_path="/World/envs/env_.*/ToyPork",   
         init_state=AssetBaseCfg.InitialStateCfg(pos=[0.2, 0.45, 0.84],   # adjust to rest on table
                                                 rot=[1, 0, 0, 0]),
         spawn=UsdFileCfg(
-            usd_path=f"{project_root}/assets/objects/Toys/toy_pork.usdz",    # table model file
-            rigid_props=sim_utils.RigidBodyPropertiesCfg(kinematic_enabled=True),   
+            usd_path=f"{project_root}/assets/objects/Toys/toy_pork2.usd",    # toy model file
+            rigid_props=sim_utils.RigidBodyPropertiesCfg(),   
         ),
     )
-    """
-    toy_pork = RigidObjectCfg(
-        prim_path="/World/envs/env_.*/ToyPork",    # path of your pet toy
-        init_state=RigidObjectCfg.InitialStateCfg(
-            pos=[0.2, 0.45, 0.84],   # adjust to rest on table
-            rot=[1, 0, 0, 0]),
-        spawn=UsdFileCfg(
-            usd_path="/opt/unitree_robotics/unitree_sim_isaaclab/assets/objects/Toys/toy_pork.usdz",  
-            rigid_props=sim_utils.RigidBodyPropertiesCfg(
-                disable_gravity=False,
-                retain_accelerations=False,
-                max_depenetration_velocity=3.0,  # helps stability with soft contact (avoids explosive separations)
-                linear_damping=0.2,
-                angular_damping=0.3,
-            ),
-            mass_props=sim_utils.MassPropertiesCfg(
-                mass=0.25,  # very soft toy mass
-                density=None,
-            ),
-            collision_props=sim_utils.CollisionPropertiesCfg(
-                collision_enabled=True,
-                contact_offset=0.005,
-                rest_offset=0.0,
-            ),
-        ),
-    )"""
 
     # Ground plane
     # 3. ground configuration
