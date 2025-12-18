@@ -9,10 +9,11 @@ import zmq
 import time
 import threading
 from image_server.shared_memory_utils import MultiImageReader
+import os
 
 
 class ImageServer:
-    def __init__(self, fps=30, port=5555, Unit_Test=False):
+    def __init__(self, fps=30, port=None, Unit_Test=False):
         """
         Multi-image server - read multi-image data from shared memory and publish it
         """
@@ -20,6 +21,17 @@ class ImageServer:
         
         self.fps = fps
         self.port = port
+        if port is None:
+            env_port = os.getenv("IMAGE_SERVER_PORT", "").strip()
+            if env_port:
+                self.port = int(env_port)
+            else:
+                base = 55000
+                span = 1000  # per-user range
+                self.port = base + (os.getuid() % span)
+        else:
+            self.port = int(port)
+
         self.Unit_Test = Unit_Test
         self.running = False
         self.publish_thread = None

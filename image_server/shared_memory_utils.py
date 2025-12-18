@@ -12,11 +12,13 @@ import numpy as np
 import cv2
 from multiprocessing import shared_memory
 from typing import Optional, Dict, List
-import struct
+import struct 
 import os
 
 # shared memory configuration
-SHM_NAME = "isaac_multi_image_shm"
+# SHM_NAME = "isaac_multi_image_shm"
+DEFAULET_SHM_NAME = f"isaac_multi_image_shm_u{os.getuid()}"
+SHM_NAME = os.getenv("ISAAC_MULTI_IMAGE_SHM_NAME", DEFAULET_SHM_NAME)
 SHM_SIZE = 640* 480 * 3 * 3 + 1024  # the size of the concatenated images + the header information buffer
 
 # define the simplified header structure

@@ -1,0 +1,31 @@
+* [33m623cefa[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m Update environment installation sections in README
+* [33m35326f7[m Update Readme
+[31m|[m * [33m89db6f5[m[33m ([m[1;31morigin/dataset_inference[m[33m)[m update right_head_cam stream
+[31m|[m * [33m43d308e[m include pork and remove 123
+[31m|[m * [33m466e472[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m remove pork
+[31m|[m * [33m647409b[m .
+[31m|[m * [33mdf9339d[m first steps
+[31m|[m[31m/[m  
+* [33m9d860d1[m Remove accidentally generated unnecessary files.
+* [33m0d4927c[m [fix] Optimize and refine IMU data acquisition for better accuracy and stability
+* [33m04076bb[m [fix] Refactor IMU data retrieval and fix known issues
+* [33m5b89b37[m feat: optimize Dockerfile and build runtime environment in Docker
+* [33m0673f04[m Add headless running mode.
+* [33mb9a6323[m update name
+* [33mdb2f832[m Implement compatibility for the H1-2 robot model.
+* [33ma322bc0[m Add reward DDS publishing and fix some bugs.
+* [33mc278e00[m Modify the camera viewpoint.
+* [33m42d8aaa[m update code
+* [33m83071b9[m update code
+* [33mcdea2d2[m update code
+* [33mb075304[m Optimize the code to improve speed
+* [33m9101b54[m update readme
+* [33m6048b80[m update sim_main and isaacsim5.0_install
+* [33mf56158f[m update README
+* [33mb11f95a[m update README
+* [33m324294a[m Update README
+* [33mec6886b[m Add a discrete reward signal for each individual task.
+* [33ma4a788a[m Update READMe
+* [33m7bec6dd[m Update README
+* [33m048fea3[m Update README
+* [33m0e74086[m Update isaacLab install
