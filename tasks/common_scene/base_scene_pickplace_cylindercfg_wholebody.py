@@ -55,7 +55,7 @@ class TableCylinderSceneCfgWH(InteractiveSceneCfg): # inherit from the interacti
     # 2. object configuration (cylinder)     
     object = RigidObjectCfg(
         prim_path="/World/envs/env_.*/Object",    # object in the scene
-        init_state=RigidObjectCfg.InitialStateCfg(pos=[-2.58514,-2.78975,0.84], # initial position (pos) 
+        init_state=RigidObjectCfg.InitialStateCfg(pos=[-2.6,-2.8,0.84], # initial position (pos) 
                                                   rot=[1, 0, 0, 0]), # initial rotation (rot)
         spawn=sim_utils.CylinderCfg(
             radius=0.018,    # cylinder radius (radius)
@@ -76,6 +76,26 @@ class TableCylinderSceneCfgWH(InteractiveSceneCfg): # inherit from the interacti
         ),
     )
     # Ground plane
+
+    toy_pork = AssetBaseCfg(
+        prim_path="/World/envs/env_.*/ToyPork",   
+        init_state=AssetBaseCfg.InitialStateCfg(pos=[-2, -2, 0.84],   # adjust to rest on table
+                                                rot=[1, 0, 0, 0]),
+        spawn=UsdFileCfg(
+            usd_path=f"{project_root}/assets/objects/toy_pork/toy_pork_usdz_to_usd.usd",    # toy model file
+            # rigid_props=sim_utils.RigidBodyPropertiesCfg(), 
+        ),
+    )
+
+    dot_pig = AssetBaseCfg(
+        prim_path="/World/envs/env_.*/DotPig",   
+        init_state=AssetBaseCfg.InitialStateCfg(pos=[-2.3, -2, 0.84],   # adjust to rest on table
+                                                rot=[1, 0, 0, 0]),
+        spawn=UsdFileCfg(
+            usd_path=f"{project_root}/assets/objects/dot_pig/dot_pig.usd",    # toy model file
+            # rigid_props=sim_utils.RigidBodyPropertiesCfg(), 
+        ),
+    )
 
 
     # Lights
