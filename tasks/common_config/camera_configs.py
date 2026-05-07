@@ -85,8 +85,24 @@ class CameraPresets:
     
     @classmethod
     def g1_front_camera(cls) -> CameraCfg:
-        """front camera configuration"""
-        return CameraBaseCfg.get_camera_config()
+        """Hive-specific: OAK-1 Lite mounted on top of the G1's head.
+
+        Replaces the upstream wide-angle d435 specs to match the real
+        Hive head camera (an OAK-1 Lite, single colour sensor):
+          - HFOV ≈ 69° (default M12 lens). With horizontal_aperture=20
+            this requires focal_length=14.56 mm
+            (HFOV = 2·arctan(20/(2·14.56)) ≈ 69°).
+          - Resolution stays at 640×480 — the OAK-1 Lite typically
+            streams ~640×400 for fast inference, and paint_detection's
+            ROI/grid pipeline downstream is sized for that anyway.
+          - Mount: d435_link + 10 cm up, putting it on top of the head.
+            Tune `pos_offset` if the wall isn't framed well at the
+            painting standoff.
+        """
+        return CameraBaseCfg.get_camera_config(
+            focal_length=14.56,
+            pos_offset=(0.0, 0.0, 0.10),
+        )
     @classmethod
     def h12_front_camera(cls) -> CameraCfg:
         """front camera configuration"""
