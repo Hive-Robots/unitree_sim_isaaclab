@@ -19,15 +19,18 @@ class FloorWallSceneCfg(InteractiveSceneCfg):
         spawn=GroundPlaneCfg(),
     )
 
-    # Wall ~0.5 m in front of a robot placed at the world origin facing +X.
+    # Wall ~0.60 m in front of a robot placed at the world origin facing +X.
+    # 8 m wide (Y) gives ample room for the robot to step right repeatedly
+    # along the wall — at vy=-0.4 in Isaac the effective drift per step is
+    # ~0.5 m, so 8 m supports ~8 strips with comfortable margin.
     wall = AssetBaseCfg(
         prim_path="/World/envs/env_.*/Wall",
         init_state=AssetBaseCfg.InitialStateCfg(
-            pos=[0.5, 0.0, 1.0],
+            pos=[0.60, 0.0, 1.0],
             rot=[1.0, 0.0, 0.0, 0.0],
         ),
         spawn=sim_utils.CuboidCfg(
-            size=(0.05, 2.0, 2.0),
+            size=(0.05, 8.0, 2.0),
             visual_material=sim_utils.PreviewSurfaceCfg(diffuse_color=(0.7, 0.7, 0.7)),
             collision_props=sim_utils.CollisionPropertiesCfg(),
             rigid_props=sim_utils.RigidBodyPropertiesCfg(kinematic_enabled=True),
