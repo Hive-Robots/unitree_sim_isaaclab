@@ -10,6 +10,7 @@ os.environ["PROJECT_ROOT"] = project_root
 
 import argparse
 import contextlib
+import glob
 import time
 import sys
 import signal
@@ -30,7 +31,9 @@ parser.add_argument("--action_source", type=str, default="dds",
                    help="Action source")
 
 
-parser.add_argument("--robot_type", type=str, default="g129", help="robot type")
+parser.add_argument("--robot_type", type=str, default="g129",
+                    choices=("g129", "h1_2", "g129dof"),
+                    help="robot type — argparse rejects unknowns at parse time so a typo (e.g. 'g12') exits before any DDS / image-server / Isaac init.")
 parser.add_argument("--enable_dex1_dds", action="store_true", help="enable gripper DDS")
 parser.add_argument("--enable_dex3_dds", action="store_true", help="enable dexterous hand DDS")
 parser.add_argument("--enable_inspire_dds", action="store_true", help="enable inspire hand DDS")
@@ -115,6 +118,30 @@ from action_provider.create_action_provider import create_action_provider
 from tools.get_stiffness import get_robot_stiffness_from_env
 from tools.get_reward import get_step_reward_value,get_current_rewards
 
+def _cleanup_shm():
+    """Unlink /dev/shm segments left behind by this process group.
+
+    DDSManager mmaps POSIX shared memory at /dev/shm/psm_*; the camera
+    writers mmap /dev/shm/isaac_*_image_shm. Python's resource_tracker
+    only *warns* about unreleased segments at shutdown — it doesn't
+    unlink them. Stale segments persist across runs and poison DDS
+    discovery for the next sim launch (the new participant attaches to
+    the old one's shm, sees inconsistent state, and the next-process'
+    rt/lowstate publisher is silently invisible to subscribers).
+
+    Filtering by uid is defensive: don't unlink another user's shm if
+    multiple sims are running on a shared host.
+    """
+    my_uid = os.getuid()
+    for pattern in ("/dev/shm/psm_*", "/dev/shm/isaac_*_image_shm"):
+        for path in glob.glob(pattern):
+            try:
+                if os.stat(path).st_uid == my_uid:
+                    os.unlink(path)
+            except OSError:
+                pass
+
+
 def setup_signal_handlers(controller,dds_manager=None,image_server=None):
     """set signal handlers"""
     def signal_handler(signum, frame):
@@ -133,6 +160,7 @@ def setup_signal_handlers(controller,dds_manager=None,image_server=None):
                 image_server.stop()
         except Exception as e:
             print(f"Failed to stop image server: {e}")
+        _cleanup_shm()
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
 
