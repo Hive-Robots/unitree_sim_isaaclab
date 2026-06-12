@@ -14,11 +14,6 @@ ARG https_proxy
 ENV http_proxy=${http_proxy}
 ENV https_proxy=${https_proxy}
 
-# 使用阿里云源
-RUN sed -i 's|http://archive.ubuntu.com/ubuntu/|http://mirrors.aliyun.com/ubuntu/|g' /etc/apt/sources.list && \
-    sed -i 's|http://security.ubuntu.com/ubuntu/|http://mirrors.aliyun.com/ubuntu/|g' /etc/apt/sources.list
-
-
 # 安装构建依赖（GCC 12 + GLU + Vulkan）
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc-12 g++-12 cmake build-essential unzip git-lfs \
